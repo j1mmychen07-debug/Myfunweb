@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jimmy Chen — Portfolio</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f9f9f7;
+      --surface: #ffffff;
+      --border: #e5e5e0;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --accent-light: #eff6ff;
+      --accent-hover: #1d4ed8;
+      --success: #16a34a;
+      --error: #dc2626;
+      --warning: #d97706;
+      --radius: 12px;
+      --shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(249,249,247,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-brand { font-weight: 700; font-size: 1.1rem; color: var(--accent); letter-spacing: -0.02em; }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-size: 0.9rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── Layout ── */
+    .container { max-width: 760px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 4rem 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    /* ── Hero / About ── */
+    .hero {
+      display: flex; align-items: center; gap: 2.5rem;
+      padding: 4rem 0 3rem;
+    }
+    .hero-img-wrap {
+      flex-shrink: 0;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-text h1 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .hero-text .tagline {
+      color: var(--accent); font-weight: 600; font-size: 1rem;
+      margin: 0.4rem 0 0.8rem;
+    }
+    .hero-text p { color: var(--muted); font-size: 0.97rem; max-width: 480px; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .badge {
+      background: var(--accent-light); color: var(--accent);
+      font-size: 0.78rem; font-weight: 600; padding: 0.25rem 0.75rem;
+      border-radius: 999px; border: 1px solid #bfdbfe;
+    }
+
+    /* ── Skills / Highlights ── */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem 1.25rem 1rem;
+      box-shadow: var(--shadow); transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    .card-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .card p { font-size: 0.83rem; color: var(--muted); }
+    section h2 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; }
+    section .section-sub { color: var(--muted); font-size: 0.88rem; margin-top: 0.25rem; }
+
+    /* ── Game ── */
+    #game { background: var(--bg); }
+    .game-container {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem;
+      box-shadow: var(--shadow); margin-top: 1.5rem;
+    }
+
+    /* Stats row */
+    .game-stats {
+      display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .stat-box {
+      flex: 1; min-width: 90px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.75rem 1rem; text-align: center;
+    }
+    .stat-value { font-size: 1.6rem; font-weight: 800; color: var(--accent); }
+    .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.1rem; }
+
+    /* Word display */
+    .word-display {
+      background: var(--accent-light); border: 2px solid #bfdbfe;
+      border-radius: 10px; padding: 1.25rem 1.5rem;
+      text-align: center; margin-bottom: 1.25rem;
+    }
+    #current-word {
+      font-size: clamp(1.6rem, 5vw, 2.5rem);
+      font-weight: 800; letter-spacing: 0.04em;
+      color: var(--accent); font-family: "Courier New", monospace;
+      transition: opacity 0.15s;
+    }
+    .word-hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+
+    /* Input area */
+    .input-row {
+      display: flex; gap: 0.75rem; align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    #word-input {
+      flex: 1;
+      font-size: 1.1rem; font-weight: 600;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border); border-radius: 8px;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+      background: var(--surface); color: var(--text);
+      font-family: "Courier New", monospace;
+    }
+    #word-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+    #word-input.correct { border-color: var(--success); background: #f0fdf4; }
+    #word-input.wrong  { border-color: var(--error);   background: #fef2f2; }
+
+    /* Buttons */
+    .btn {
+      padding: 0.75rem 1.5rem; border: none; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 700; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-ghost { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Progress bar */
+    .progress-wrap { background: var(--border); border-radius: 999px; height: 6px; margin-bottom: 1rem; overflow: hidden; }
+    .progress-bar { height: 100%; background: var(--accent); border-radius: 999px; transition: width 1s linear; }
+
+    /* Feedback flash */
+    #feedback {
+      text-align: center; font-weight: 700; font-size: 0.95rem;
+      height: 1.4rem; transition: color 0.2s;
+    }
+    #feedback.ok  { color: var(--success); }
+    #feedback.err { color: var(--error); }
+
+    /* Word history */
+    .word-history { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .wh-tag {
+      font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 600;
+    }
+    .wh-tag.hit  { background: #dcfce7; color: #16a34a; }
+    .wh-tag.miss { background: #fee2e2; color: #dc2626; }
+
+    /* Results overlay */
+    #results {
+      display: none; text-align: center; padding: 1rem 0;
+    }
+    #results h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; }
+    #results p { color: var(--muted); margin-bottom: 1rem; font-size: 0.9rem; }
+    .result-stats { display: flex; justify-content: center; gap: 2rem; margin: 1rem 0; }
+    .rs { text-align: center; }
+    .rs .val { font-size: 2rem; font-weight: 800; color: var(--accent); }
+    .rs .lbl { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Screen states */
+    #game-screen, #results { }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center; padding: 2rem 1.5rem;
+      color: var(--muted); font-size: 0.82rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 560px) {
+      .hero { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+      .hero-img-wrap { width: 90px; height: 90px; }
+      nav { padding: 0 1rem; }
+      .nav-links { gap: 1rem; }
+      .game-container { padding: 1.25rem; }
+      .input-row { flex-direction: column; }
+      #word-input { width: 100%; }
+      .btn { width: 100%; text-align: center; }
+      .result-stats { gap: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav>
+  <div class="nav-brand">Jimmy Chen</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#highlights">Work</a>
+    <a href="#game">Game</a>
+  </div>
+</nav>
+
+<!-- ── Hero / About ── -->
+<div class="container">
+  <div class="hero" id="about">
+    <div class="hero-img-wrap">
+      <img src="Jimmy.jpg" alt="Jimmy Chen" />
+    </div>
+    <div class="hero-text">
+      <h1>Hi, I'm Jimmy Chen 👋</h1>
+      <div class="tagline">Entrepreneur &amp; Builder</div>
+      <p>I build businesses from the ground up — turning ideas into real products, teams, and revenue. Passionate about strategy, technology, and creating things that matter.</p>
+      <div class="badge-row">
+        <span class="badge">🚀 Startup Founder</span>
+        <span class="badge">📈 Growth Strategy</span>
+        <span class="badge">💡 Product Thinking</span>
+        <span class="badge">🤝 Team Builder</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Highlights ── -->
+<section id="highlights">
+  <div class="container">
+    <h2>What I Do</h2>
+    <p class="section-sub">A few things I'm focused on right now</p>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🏗️</div>
+        <h3>Build Products</h3>
+        <p>From concept to launch — I love taking an idea all the way to a product people actually use.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Drive Growth</h3>
+        <p>Data-informed decisions, scalable systems, and relentless focus on what moves the needle.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤝</div>
+        <h3>Lead Teams</h3>
+        <p>Great outcomes come from great people. I invest in culture, clarity, and collaboration.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <h3>Explore Tech</h3>
+        <p>Always learning — AI, automation, and new platforms keep the work exciting and relevant.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Word Game ── -->
+<section id="game">
+  <div class="container">
+    <h2>⚡ Business Typing Challenge</h2>
+    <p class="section-sub">Type as many business terms as you can in 60 seconds. Ready?</p>
+
+    <div class="game-container">
+
+      <!-- Stats -->
+      <div class="game-stats">
+        <div class="stat-box">
+          <div class="stat-value" id="stat-timer">60</div>
+          <div class="stat-label">Seconds</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-wpm">0</div>
+          <div class="stat-label">WPM</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-score">0</div>
+          <div class="stat-label">Score</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="stat-acc">—</div>
+          <div class="stat-label">Accuracy</div>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-bar" id="timer-bar" style="width:100%"></div>
+      </div>
+
+      <!-- Game screen -->
+      <div id="game-screen">
+        <div class="word-display">
+          <div id="current-word">READY?</div>
+          <div class="word-hint" id="word-hint">Press Start to begin</div>
+        </div>
+
+        <div class="input-row">
+          <input
+            type="text"
+            id="word-input"
+            placeholder="Type word here..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            disabled
+          />
+          <button class="btn btn-primary" id="start-btn" onclick="startGame()">Start</button>
+        </div>
+
+        <div id="feedback">&nbsp;</div>
+        <div class="word-history" id="word-history"></div>
+      </div>
+
+      <!-- Results screen -->
+      <div id="results">
+        <h3 id="results-emoji">🏆 Time's Up!</h3>
+        <div class="result-stats">
+          <div class="rs"><div class="val" id="res-wpm">0</div><div class="lbl">WPM</div></div>
+          <div class="rs"><div class="val" id="res-score">0</div><div class="lbl">Words</div></div>
+          <div class="rs"><div class="val" id="res-acc">0%</div><div class="lbl">Accuracy</div></div>
+        </div>
+        <p id="results-msg">Great effort! Every word is a step toward mastery.</p>
+        <button class="btn btn-primary" onclick="resetGame()" style="margin-top:0.5rem">Play Again</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>Built with ☕ by Jimmy Chen &nbsp;·&nbsp; 2026</p>
+</footer>
+
+<!-- ── Game Script ── -->
+<script>
+  const WORDS = [
+    // Strategy & Leadership
+    { word: "strategy",    hint: "Long-term plan" },
+    { word: "leadership",  hint: "Guiding a team" },
+    { word: "vision",      hint: "Future direction" },
+    { word: "mission",     hint: "Core purpose" },
+    { word: "execution",   hint: "Getting things done" },
+    { word: "pivot",       hint: "Change direction" },
+    { word: "scale",       hint: "Grow bigger" },
+    { word: "leverage",    hint: "Use resources wisely" },
+    { word: "benchmark",   hint: "Measure of success" },
+    { word: "disrupt",     hint: "Change the market" },
+    // Finance & Growth
+    { word: "revenue",     hint: "Money coming in" },
+    { word: "profit",      hint: "Revenue minus costs" },
+    { word: "funding",     hint: "Capital raised" },
+    { word: "equity",      hint: "Ownership stake" },
+    { word: "valuation",   hint: "Company worth" },
+    { word: "cashflow",    hint: "Money movement" },
+    { word: "bootstrap",   hint: "Self-funded growth" },
+    { word: "runway",      hint: "Time before out of cash" },
+    { word: "metrics",     hint: "Measurable outcomes" },
+    { word: "kpi",         hint: "Key performance indicator" },
+    // Product & Customers
+    { word: "product",     hint: "What you sell" },
+    { word: "customer",    hint: "Who you serve" },
+    { word: "retention",   hint: "Keeping customers" },
+    { word: "churn",       hint: "Losing customers" },
+    { word: "conversion",  hint: "Turning leads to buyers" },
+    { word: "pipeline",    hint: "Sales funnel" },
+    { word: "market",      hint: "Where you compete" },
+    { word: "niche",       hint: "Specific segment" },
+    { word: "onboarding",  hint: "New user setup" },
+    { word: "feedback",    hint: "Customer input" },
+    // Teams & Operations
+    { word: "culture",     hint: "How the team works" },
+    { word: "hire",        hint: "Add team members" },
+    { word: "delegate",    hint: "Assign to others" },
+    { word: "operations",  hint: "Day-to-day running" },
+    { word: "process",     hint: "Repeatable workflow" },
+    { word: "roadmap",     hint: "Plan over time" },
+    { word: "sprint",      hint: "Short work cycle" },
+    { word: "agile",       hint: "Flexible methodology" },
+    { word: "network",     hint: "Your connections" },
+    { word: "partnership", hint: "Working together" },
+  ];
+
+  const TOTAL_TIME = 60;
+
+  let timer = null;
+  let timeLeft = TOTAL_TIME;
+  let score = 0;
+  let attempts = 0;
+  let wordPool = [];
+  let currentWord = null;
+  let gameActive = false;
+  let startTime = null;
+
+  const elTimer   = document.getElementById("stat-timer");
+  const elWpm     = document.getElementById("stat-wpm");
+  const elScore   = document.getElementById("stat-score");
+  const elAcc     = document.getElementById("stat-acc");
+  const elWord    = document.getElementById("current-word");
+  const elHint    = document.getElementById("word-hint");
+  const elInput   = document.getElementById("word-input");
+  const elFb      = document.getElementById("feedback");
+  const elBar     = document.getElementById("timer-bar");
+  const elHistory = document.getElementById("word-history");
+  const elStartBtn = document.getElementById("start-btn");
+  const elGameScreen = document.getElementById("game-screen");
+  const elResults    = document.getElementById("results");
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function nextWord() {
+    if (wordPool.length === 0) wordPool = shuffle(WORDS);
+    currentWord = wordPool.pop();
+    elWord.style.opacity = "0";
+    setTimeout(() => {
+      elWord.textContent = currentWord.word.toUpperCase();
+      elHint.textContent = "💡 " + currentWord.hint;
+      elWord.style.opacity = "1";
+    }, 120);
+  }
+
+  function calcWpm() {
+    if (!startTime) return 0;
+    const elapsed = (Date.now() - startTime) / 1000 / 60; // minutes
+    return elapsed > 0 ? Math.round(score / elapsed) : 0;
+  }
+
+  function updateStats() {
+    elWpm.textContent = calcWpm();
+    elScore.textContent = score;
+    const acc = attempts > 0 ? Math.round((score / attempts) * 100) : "—";
+    elAcc.textContent = attempts > 0 ? acc + "%" : "—";
+  }
+
+  function startGame() {
+    // Reset
+    score = 0; attempts = 0; timeLeft = TOTAL_TIME; wordPool = [];
+    elHistory.innerHTML = "";
+    elInput.value = "";
+    elInput.className = "";
+    updateStats();
+    elBar.style.transition = "none";
+    elBar.style.width = "100%";
+
+    elGameScreen.style.display = "block";
+    elResults.style.display = "none";
+    elStartBtn.textContent = "Restart";
+    elInput.disabled = false;
+    elInput.focus();
+    gameActive = true;
+    startTime = Date.now();
+
+    nextWord();
+    setFeedback("", "");
+
+    clearInterval(timer);
+    timer = setInterval(() => {
+      timeLeft--;
+      elTimer.textContent = timeLeft;
+      // color timer red in last 10s
+      elTimer.style.color = timeLeft <= 10 ? "var(--error)" : "var(--accent)";
+      const pct = (timeLeft / TOTAL_TIME) * 100;
+      elBar.style.transition = "width 1s linear";
+      elBar.style.width = pct + "%";
+      updateStats();
+      if (timeLeft <= 0) endGame();
+    }, 1000);
+  }
+
+  function setFeedback(msg, type) {
+    elFb.textContent = msg || " ";
+    elFb.className = type || "";
+  }
+
+  function endGame() {
+    clearInterval(timer);
+    gameActive = false;
+    elInput.disabled = true;
+    elStartBtn.textContent = "Start";
+    elTimer.textContent = "0";
+    elTimer.style.color = "var(--error)";
+
+    const finalWpm = calcWpm();
+    const finalAcc = attempts > 0 ? Math.round((score / attempts) * 100) : 0;
+
+    document.getElementById("res-wpm").textContent   = finalWpm;
+    document.getElementById("res-score").textContent = score;
+    document.getElementById("res-acc").textContent   = finalAcc + "%";
+
+    let emoji = "💪", msg = "Good effort — keep practicing!";
+    if (score >= 30)      { emoji = "🏆"; msg = "Outstanding! You type at lightning speed!"; }
+    else if (score >= 20) { emoji = "🔥"; msg = "Excellent! You've got serious typing chops!"; }
+    else if (score >= 12) { emoji = "⚡"; msg = "Great run! You're building real momentum!"; }
+    else if (score >= 6)  { emoji = "👍"; msg = "Nice start! A few more rounds and you'll fly!"; }
+    document.getElementById("results-emoji").textContent = emoji + " Time's Up!";
+    document.getElementById("results-msg").textContent   = msg;
+
+    elGameScreen.style.display = "none";
+    elResults.style.display    = "block";
+  }
+
+  function resetGame() {
+    elResults.style.display = "none";
+    elGameScreen.style.display = "block";
+    elTimer.textContent = TOTAL_TIME;
+    elTimer.style.color = "var(--accent)";
+    elBar.style.transition = "none";
+    elBar.style.width = "100%";
+    elWord.textContent = "READY?";
+    elHint.textContent = "Press Start to begin";
+    elInput.value = "";
+    elInput.className = "";
+    elInput.disabled = true;
+    score = 0; attempts = 0; timeLeft = TOTAL_TIME;
+    elHistory.innerHTML = "";
+    updateStats();
+    setFeedback("", "");
+    elStartBtn.textContent = "Start";
+  }
+
+  // ── Input handler ──
+  elInput.addEventListener("input", function () {
+    if (!gameActive || !currentWord) return;
+    const typed = this.value.trim().toLowerCase();
+    const target = currentWord.word.toLowerCase();
+
+    if (typed === target) {
+      // Correct!
+      score++;
+      attempts++;
+      const tag = document.createElement("span");
+      tag.className = "wh-tag hit";
+      tag.textContent = target;
+      elHistory.appendChild(tag);
+      // scroll history into view
+      elHistory.scrollLeft = elHistory.scrollWidth;
+
+      this.value = "";
+      this.className = "correct";
+      setTimeout(() => { this.className = ""; }, 250);
+      setFeedback("✓ Correct!", "ok");
+      setTimeout(() => setFeedback("", ""), 800);
+      updateStats();
+      nextWord();
+    } else if (typed.length >= target.length) {
+      // Wrong (long enough to be a mistake)
+      attempts++;
+      const tag = document.createElement("span");
+      tag.className = "wh-tag miss";
+      tag.textContent = typed;
+      elHistory.appendChild(tag);
+
+      this.className = "wrong";
+      setTimeout(() => { this.value = ""; this.className = ""; }, 400);
+      setFeedback("✗ Try again!", "err");
+      setTimeout(() => setFeedback("", ""), 800);
+      updateStats();
+      nextWord();
+    }
+  });
+
+  // Allow Enter key as submit
+  elInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && gameActive) {
+      const typed = this.value.trim().toLowerCase();
+      const target = currentWord ? currentWord.word.toLowerCase() : "";
+      if (typed === target) {
+        score++;
+        attempts++;
+        const tag = document.createElement("span");
+        tag.className = "wh-tag hit";
+        tag.textContent = target;
+        elHistory.appendChild(tag);
+        this.value = "";
+        this.className = "correct";
+        setTimeout(() => { this.className = ""; }, 250);
+        setFeedback("✓ Correct!", "ok");
+        setTimeout(() => setFeedback("", ""), 800);
+        updateStats();
+        nextWord();
+      } else if (typed.length > 0) {
+        attempts++;
+        const tag = document.createElement("span");
+        tag.className = "wh-tag miss";
+        tag.textContent = typed;
+        elHistory.appendChild(tag);
+        this.className = "wrong";
+        setTimeout(() => { this.value = ""; this.className = ""; }, 400);
+        setFeedback("✗ Try again!", "err");
+        setTimeout(() => setFeedback("", ""), 800);
+        updateStats();
+        nextWord();
+      }
+    }
+  });
+
+  // Prevent autocorrect messing with input on mobile
+  elInput.addEventListener("compositionend", function() {
+    // trigger the input event manually after IME composition
+    elInput.dispatchEvent(new Event("input"));
+  });
+</script>
+
+</body>
+</html>
